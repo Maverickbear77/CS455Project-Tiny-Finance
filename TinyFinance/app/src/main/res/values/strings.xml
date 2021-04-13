@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Tiny Finance</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="store_name">Store Name</string>
+    <string name="store_hint">Maximum 20 characters</string>
+    <string name="date">Purchase Date</string>
+    <string name="date_hint">e.g.: 2021-01-01</string>
+    <string name="amount">Amount</string>
+    <string name="amount_hint">Enter the amount</string>
+    <string name="empty_record">Please fill out all required fields</string>
+    <string name="wrong_date">The date format is invalid</string>
+    <string name="new_record_created">The record has been created successfully</string>
+    <string name="memo">Memo</string>
+    <string name="new_record">New Record</string>
+    <string name="optional">Optional</string>
+    <string name="save_button">Save</string>
+    <string name="delete_button">Delete</string>
+    <string name="detail">Detail</string>
+    <string name="update_message">The record has been updated successfully</string>
+    <string name="delete_message">The record has been deleted</string>
+</resources>
