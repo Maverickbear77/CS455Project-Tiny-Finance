@@ -28,6 +28,7 @@ class AddFragment : Fragment() {
     private lateinit var communicator: Communicator
 
     private val recordRepository = RecordRepository.get()
+    private var amountEntered = false
 
     private val categories = listOf<String>("Food",
                                         "Housing",
@@ -89,7 +90,7 @@ class AddFragment : Fragment() {
                 {
                     record.shop = shop
                 }
-                Log.d(TAG, "HI "+record.shop)
+                Log.d(TAG, "HI "+ record.shop)
 
             }
 
@@ -100,10 +101,16 @@ class AddFragment : Fragment() {
             override fun beforeTextChanged(sequence: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(sequence: CharSequence?, start: Int, before: Int, count: Int) {
+                if (sequence.toString() == "" && amountEntered)
+                {
+                    record.amount = 0.0
+                }
+
                 if (sequence.toString() != "")
                 {
                     var number = sequence.toString().toDouble()
                     record.amount = (number * 100).toInt() / 100.0
+                    amountEntered = true
                     Log.d(TAG, "HI "+record.amount)
                 }
             }

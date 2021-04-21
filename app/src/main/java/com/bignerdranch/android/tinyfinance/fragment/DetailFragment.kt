@@ -25,11 +25,12 @@ class DetailFragment : Fragment() {
     private lateinit var saveButton: Button
     private lateinit var memoField: EditText
     private lateinit var deleteButton: Button
-    private lateinit var test: ImageView
 
     private val recordDetailViewModel: RecordDetailViewModel by lazy {
         ViewModelProviders.of(this).get(RecordDetailViewModel::class.java)
     }
+
+    private var amountEntered = false
 
     private val categories = mutableListOf("Food",
                                             "Housing",
@@ -123,10 +124,16 @@ class DetailFragment : Fragment() {
             override fun beforeTextChanged(sequence: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(sequence: CharSequence?, start: Int, before: Int, count: Int) {
+                if (sequence.toString() == "" && amountEntered)
+                {
+                    record.amount = 0.0
+                }
+
                 if (sequence.toString() != "")
                 {
                     var number = sequence.toString().toDouble()
                     record.amount = (number * 100).toInt() / 100.0
+                    amountEntered = true
                 }
             }
 
