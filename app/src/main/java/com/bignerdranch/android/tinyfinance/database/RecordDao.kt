@@ -12,6 +12,9 @@ interface RecordDao {
     @Query("SELECT * FROM record_table WHERE id=(:id)")
     fun loadSingleRecord(id: Int): LiveData<Record?>
 
+    @Query("SELECT * FROM record_table WHERE date BETWEEN :startDate AND :endDate" )
+    fun loadRecordByDate(startDate: String, endDate: String): LiveData<List<Record>>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addRecord(record: Record)
 

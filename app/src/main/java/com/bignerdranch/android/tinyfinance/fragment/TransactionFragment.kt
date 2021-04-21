@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -85,6 +86,7 @@ class TransactionFragment: Fragment() {
         private val shopTextView: TextView = itemView.findViewById(R.id.record_shop_name)
         private val amountTextView: TextView = itemView.findViewById(R.id.record_purchase_amount)
         private val dateTextView: TextView = itemView.findViewById(R.id.record_purchase_date)
+        private val categoryImage: ImageView = itemView.findViewById(R.id.imageView)
         private lateinit var record: Record
 
         init{
@@ -96,6 +98,21 @@ class TransactionFragment: Fragment() {
             shopTextView.text = "Purchase at " + this.record.shop
             amountTextView.text = "Total Amount: $" + this.record.amount.toString()
             dateTextView.text = "Date: " + this.record.date
+
+            when (record.category)
+            {
+                "Food" -> categoryImage.setImageResource(R.mipmap.food)
+                "Housing" -> categoryImage.setImageResource(R.mipmap.housing)
+                "Transportation" -> categoryImage.setImageResource(R.mipmap.transportation)
+                "Entertainment" -> categoryImage.setImageResource(R.mipmap.entertainment)
+                "Utilities" -> categoryImage.setImageResource(R.mipmap.utilities)
+                "Insurance" -> categoryImage.setImageResource(R.mipmap.insurance)
+                "Education" -> categoryImage.setImageResource(R.mipmap.education)
+                "Supplies" -> categoryImage.setImageResource(R.mipmap.supplies)
+                "Personal" -> categoryImage.setImageResource(R.mipmap.personal)
+                "Others" -> categoryImage.setImageResource(R.mipmap.others)
+            }
+
         }
 
         override fun onClick(v: View?) {

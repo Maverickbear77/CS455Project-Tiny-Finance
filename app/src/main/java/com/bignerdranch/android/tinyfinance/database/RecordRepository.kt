@@ -21,6 +21,8 @@ class RecordRepository private constructor(context: Context) {
 
     fun getRecord(id: Int): LiveData<Record?> = recordDao.loadSingleRecord(id)
 
+    fun getRecordByDate(startDate: String, endDate: String): LiveData<List<Record>> = recordDao.loadRecordByDate(startDate, endDate)
+
     fun addNewRecord(record: Record){
         executor.execute{
             recordDao.addRecord(record)

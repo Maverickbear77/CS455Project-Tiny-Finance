@@ -1,6 +1,5 @@
 package com.bignerdranch.android.tinyfinance.fragment
 
-import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,12 +12,7 @@ import android.widget.*
 import com.bignerdranch.android.tinyfinance.R
 import android.widget.Toast
 import com.bignerdranch.android.tinyfinance.data.Record
-import com.bignerdranch.android.tinyfinance.database.RecordDatabase
 import com.bignerdranch.android.tinyfinance.database.RecordRepository
-import kotlinx.android.synthetic.main.fragment_add.*
-import java.util.concurrent.Executor
-import java.util.concurrent.Executors
-
 
 private const val TAG = "Add"
 
