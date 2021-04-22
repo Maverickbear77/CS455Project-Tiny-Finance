@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.bignerdranch.android.tinyfinance.data.Record
 import com.bignerdranch.android.tinyfinance.database.RecordRepository
 
+//A class for checking detail of a record
 class RecordDetailViewModel: ViewModel() {
     private val recordRepository = RecordRepository.get()
     private val recordIdLiveData = MutableLiveData<Int>()

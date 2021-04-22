@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +18,7 @@ import com.bignerdranch.android.tinyfinance.data.Record
 
 class TransactionFragment: Fragment() {
 
+    //Declare callback interface
     interface Callbacks {
         fun onRecordSelected(recordId: Int)
     }
@@ -48,6 +48,7 @@ class TransactionFragment: Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_transaction, container, false)
 
+        //Find recycler view
         recordRecyclerView = view.findViewById(R.id.record_recycler_view) as RecyclerView
         recordRecyclerView.layoutManager = LinearLayoutManager(context)
         recordRecyclerView.adapter = adapter
@@ -61,6 +62,7 @@ class TransactionFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //Communicate with database
         recordListViewModel.recordsLiveData.observe(
             viewLifecycleOwner,
             Observer { records ->
@@ -76,6 +78,7 @@ class TransactionFragment: Fragment() {
         callbacks = null
     }
 
+    //Update UI after loading data from database
     private fun updateUI(records: List<Record>){
         adapter = RecordAdapter(records)
         recordRecyclerView.adapter = adapter
@@ -83,6 +86,7 @@ class TransactionFragment: Fragment() {
 
     private inner class RecordHolder(view: View)
         :RecyclerView.ViewHolder(view), View.OnClickListener{
+        //Find text and image view
         private val shopTextView: TextView = itemView.findViewById(R.id.record_shop_name)
         private val amountTextView: TextView = itemView.findViewById(R.id.record_purchase_amount)
         private val dateTextView: TextView = itemView.findViewById(R.id.record_purchase_date)
@@ -93,6 +97,7 @@ class TransactionFragment: Fragment() {
             itemView.setOnClickListener(this)
         }
 
+        //Set values to text and image view
         fun bind(record: Record){
             this.record = record
             shopTextView.text = "Purchase at " + this.record.shop
@@ -101,6 +106,7 @@ class TransactionFragment: Fragment() {
 
             when (record.category)
             {
+                //Select different icon based on category
                 "Food" -> categoryImage.setImageResource(R.mipmap.food)
                 "Housing" -> categoryImage.setImageResource(R.mipmap.housing)
                 "Transportation" -> categoryImage.setImageResource(R.mipmap.transportation)
@@ -120,6 +126,7 @@ class TransactionFragment: Fragment() {
         }
     }
 
+    //Adapter for interacting with database
     private inner class RecordAdapter(var records: List<Record>)
         :RecyclerView.Adapter<RecordHolder>(){
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordHolder {

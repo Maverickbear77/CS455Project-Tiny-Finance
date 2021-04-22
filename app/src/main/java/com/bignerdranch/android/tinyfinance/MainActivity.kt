@@ -8,6 +8,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(), Communicator, TransactionFragment.Callbacks {
 
+    //Declare fragments
     private val dashboardFragment = DashboardFragment()
     private val addFragment = AddFragment()
     private val transactionFragment = TransactionFragment()
@@ -15,7 +16,10 @@ class MainActivity : AppCompatActivity(), Communicator, TransactionFragment.Call
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        //Load dashboard as the default page
         currentFragment(dashboardFragment)
+
+        //Load user selection for navigation
         val navigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         navigation.setOnNavigationItemSelectedListener {
             when(it.itemId)
@@ -28,16 +32,19 @@ class MainActivity : AppCompatActivity(), Communicator, TransactionFragment.Call
         }
     }
 
+    //Add fragment to callbacks
     override fun onRecordSelected(recordId: Int) {
         val fragment = DetailFragment.newInstance(recordId)
         supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit()
 
     }
 
+    //Load fragments
     private fun currentFragment(fragment: Fragment){
         supportFragmentManager.popBackStack()
         val trans = supportFragmentManager.beginTransaction()
 
+        //The if-else statement is to check if user is clicking transaction
         if (fragment == transactionFragment)
         {
             trans.replace(R.id.fragment_container, TransactionFragment.newInstance())
@@ -50,6 +57,7 @@ class MainActivity : AppCompatActivity(), Communicator, TransactionFragment.Call
         }
     }
 
+    //Use communicator to transfer message
     override fun passMessage(message: String) {
         val bundle = Bundle()
         bundle.putString("message", message)

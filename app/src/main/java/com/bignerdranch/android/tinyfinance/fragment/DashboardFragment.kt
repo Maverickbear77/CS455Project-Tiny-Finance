@@ -33,14 +33,21 @@ class DashboardFragment: Fragment() {
         dateButton = view.findViewById(R.id.sort_date) as Button
         categoryButton = view.findViewById(R.id.sort_category) as Button
 
+        //Get today's date
         var todayDate = Calendar.getInstance()
+        //Get the date of one day before
         todayDate.add(Calendar.DAY_OF_YEAR, -1)
+        //Set it to endDate
         var endDate = dateFormat.format(todayDate.time).toString()
+        //Get the date of ten day before
         todayDate.add(Calendar.DAY_OF_YEAR, -9)
+        //Set it to startDate
         var startDate = dateFormat.format(todayDate.time).toString()
 
+        //Debugging purpose
         Log.d(TAG, startDate+" "+endDate)
 
+        //Communicate with database
         recordRepository.getRecordByDate(startDate, endDate).observe(
                 viewLifecycleOwner,
                 androidx.lifecycle.Observer { it
@@ -49,6 +56,7 @@ class DashboardFragment: Fragment() {
                 }
         )
 
+        //Set listener
         dateButton.setOnClickListener {
             setBarChartData("date")
         }
@@ -66,8 +74,10 @@ class DashboardFragment: Fragment() {
         var label = ""
         var date = Calendar.getInstance()
 
+        //If user sort it by category
         if (type == "category")
         {
+            //Initialize x axis
             xvalue.add("F")
             xvalue.add("H")
             xvalue.add("T")
@@ -80,8 +90,10 @@ class DashboardFragment: Fragment() {
             xvalue.add("O")
             label = "Expense for each category in the last 10 days"
 
+            //Read each record
             for (i in 0 until records.size)
             {
+                //Check category of each record and organize data for y axis
                 when (records[i].category)
                 {
                     "Food" -> yvalue[0] += records[i].amount.toFloat()
@@ -97,8 +109,10 @@ class DashboardFragment: Fragment() {
                 }
             }
         }
+        //User sort it by date
         else
         {
+            //Initialize x axis with date
             for (i in 0 until yvalue.size)
             {
                 date.add(Calendar.DAY_OF_YEAR, -1)
@@ -107,8 +121,10 @@ class DashboardFragment: Fragment() {
 
             label = "Expense for each day in the last 10 days"
 
+            //Check each record
             for (i in 0 until records.size)
             {
+                //Set value for y axis
                 when (records[i].date)
                 {
                     xvalue[0] -> yvalue[0] += records[i].amount.toFloat()
@@ -126,12 +142,14 @@ class DashboardFragment: Fragment() {
         }
 
         val entry = mutableListOf<BarEntry>()
+        //Initialize data for bar chart
         for (i in 0 until yvalue.size)
         {
             entry.add(BarEntry(yvalue[i], i))
         }
 
         val dataset = BarDataSet(entry, label)
+        //Set values and color for bar chart
         dataset.color = resources.getColor(R.color.bar_chart)
         
         val data = BarData(xvalue, dataset)

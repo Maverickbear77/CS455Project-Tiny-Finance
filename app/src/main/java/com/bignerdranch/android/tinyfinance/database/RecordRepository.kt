@@ -8,6 +8,7 @@ import java.util.concurrent.Executors
 
 class RecordRepository private constructor(context: Context) {
 
+    //Build database
     private val database: RecordDatabase = Room.databaseBuilder(
         context.applicationContext,
         RecordDatabase::class.java,

@@ -28,6 +28,7 @@ class AddFragment : Fragment() {
     private lateinit var communicator: Communicator
 
     private val recordRepository = RecordRepository.get()
+    //Flag to check if user enter amount
     private var amountEntered = false
 
     private val categories = listOf<String>("Food",
@@ -43,6 +44,7 @@ class AddFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //Declare a record
         record = Record(0)
     }
 
@@ -52,6 +54,7 @@ class AddFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add, container, false)
+        //Find elements in xml file
         dropdownMenu = view.findViewById(R.id.category) as Spinner
         shopField = view.findViewById(R.id.store) as EditText
         amountField = view.findViewById(R.id.amount) as EditText
@@ -68,6 +71,7 @@ class AddFragment : Fragment() {
         super.onStart()
         resetInput()
 
+        //Check user input from drop-down menu
         dropdownMenu.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {}
 
@@ -77,6 +81,7 @@ class AddFragment : Fragment() {
             }
         }
 
+        //Check user input
         val shopWatcher = object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -97,6 +102,7 @@ class AddFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         }
 
+        //Check user input
         val amountWatcher = object : TextWatcher{
             override fun beforeTextChanged(sequence: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -118,6 +124,7 @@ class AddFragment : Fragment() {
             override fun afterTextChanged(sequence: Editable?) {}
         }
 
+        //Check user input
         val dateWatcher = object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -129,6 +136,7 @@ class AddFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         }
 
+        //Check user input
         val memoWatcher = object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -148,6 +156,7 @@ class AddFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         }
 
+        //Set listeners
         shopField.addTextChangedListener(shopWatcher)
         amountField.addTextChangedListener(amountWatcher)
         dateField.addTextChangedListener(dateWatcher)
@@ -156,24 +165,31 @@ class AddFragment : Fragment() {
         saveButton.setOnClickListener {
             if (isValid())
             {
+                //Insert new record
                 recordRepository.addNewRecord(record)
+                //Call communicator
                 communicator = activity as Communicator
+                //Pass the message to communicator
                 communicator.passMessage("New record created successfully")
             }
         }
     }
 
+    //This function is to valide user input
     private fun isValid(): Boolean{
+        //If user enter nothing
         if (record.shop == "" || record.amount == 0.0 || record.date == "")
         {
             Toast.makeText(activity, R.string.empty_record, Toast.LENGTH_SHORT).show()
             return false
         }
+        //If date format is not valid
         else if (record.date.length != 10 || record.date[4] != '-' || record.date[7] != '-')
         {
             Toast.makeText(activity, R.string.wrong_date, Toast.LENGTH_SHORT).show()
             return false
         }
+        //If input of date is not valid
         else if (record.date.substring(0, 4).toDouble() > 2021 ||
                 record.date.substring(5, 7).toDouble() > 12 ||
                 record.date.substring(8, 10).toDouble() > 31)
@@ -187,6 +203,7 @@ class AddFragment : Fragment() {
         }
     }
 
+    //Reset all input
     private fun resetInput(){
         shopField.setText(null)
         amountField.setText(null)

@@ -26,12 +26,15 @@ class DetailFragment : Fragment() {
     private lateinit var memoField: EditText
     private lateinit var deleteButton: Button
 
+    //Initialize view model
     private val recordDetailViewModel: RecordDetailViewModel by lazy {
         ViewModelProviders.of(this).get(RecordDetailViewModel::class.java)
     }
 
+    //Flag to check if user enter amount or not
     private var amountEntered = false
 
+    //Category option
     private val categories = mutableListOf("Food",
                                             "Housing",
                                             "Transportation",
@@ -67,6 +70,7 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
+        //Find elements in xml file
         dropdownMenu = view.findViewById(R.id.detail_category) as Spinner
         shopField = view.findViewById(R.id.detail_store) as EditText
         amountField = view.findViewById(R.id.detail_amount) as EditText
@@ -80,6 +84,7 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //Communicate with database
         recordDetailViewModel.recordLiveData.observe(
             viewLifecycleOwner,
             Observer{record ->
@@ -94,6 +99,7 @@ class DetailFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
+        //Check user selection from the drop-down menu
         dropdownMenu.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {}
 
@@ -102,6 +108,7 @@ class DetailFragment : Fragment() {
             }
         }
 
+        //Check user input
         val shopWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -120,6 +127,7 @@ class DetailFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         }
 
+        //Check user input
         val amountWatcher = object : TextWatcher {
             override fun beforeTextChanged(sequence: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -140,6 +148,7 @@ class DetailFragment : Fragment() {
             override fun afterTextChanged(sequence: Editable?) {}
         }
 
+        //Check user input
         val dateWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -150,6 +159,7 @@ class DetailFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         }
 
+        //Check user input
         val memoWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -168,6 +178,7 @@ class DetailFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         }
 
+        //Set listeners
         shopField.addTextChangedListener(shopWatcher)
         amountField.addTextChangedListener(amountWatcher)
         dateField.addTextChangedListener(dateWatcher)
@@ -187,6 +198,7 @@ class DetailFragment : Fragment() {
         }
     }
 
+    //Update user input
     private fun updateUI(){
         shopField.setText(record.shop)
         amountField.setText(record.amount.toString())
@@ -205,17 +217,21 @@ class DetailFragment : Fragment() {
         categories.add(0, item)
     }
 
+    //Valide input data
     private fun isValid(): Boolean{
+        //If user input nothing
         if (record.shop == "" || record.amount == 0.0 || record.date == "")
         {
             Toast.makeText(activity, R.string.empty_record, Toast.LENGTH_SHORT).show()
             return false
         }
+        //Check date format
         else if (record.date.length != 10 || record.date[4] != '-' || record.date[7] != '-')
         {
             Toast.makeText(activity, R.string.wrong_date, Toast.LENGTH_SHORT).show()
             return false
         }
+        //Check date input
         else if (record.date.substring(0, 4).toDouble() > 2021 ||
             record.date.substring(5, 7).toDouble() > 12 ||
             record.date.substring(8, 10).toDouble() > 31)
@@ -229,6 +245,7 @@ class DetailFragment : Fragment() {
         }
     }
 
+    //Reset input
     private fun resetInput(){
         shopField.setText(null)
         amountField.setText(null)
